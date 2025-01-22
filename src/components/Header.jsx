@@ -1,6 +1,10 @@
 const Header = () =>  {
   return (
-    <div>Header</div>
+    <header>
+      <h1>
+      Primo lavoro Full Stack
+      </h1>
+    </header>
   )
 }
 

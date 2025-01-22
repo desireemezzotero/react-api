@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+/* header */
+header {
+  background-color: rgba(127, 255, 212, 0.573);
+  height: 100px;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+h1 {
+  padding-top: 25px;
+}
+
+.img-card {
+  height: 100px;
+}
