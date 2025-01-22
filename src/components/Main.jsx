@@ -18,8 +18,11 @@ const Main = () =>  {
   useEffect(() => {
     fetchBlog()
   }, []);
+ 
+  const onDelete =(id) => {
+    setPosts((prevPost) => prevPost.filter (post => post.id != id))
+  }
 
-  
 
   return (
     <main>
@@ -28,7 +31,9 @@ const Main = () =>  {
           {posts.map(post => ( 
             <Card 
             key={post.id}
-            post={post}/>
+            post={post}
+            onDelete={() => onDelete(post.id)}/>
+
           ))}
         </div>{/* row */}
       </div>{/* container */}
