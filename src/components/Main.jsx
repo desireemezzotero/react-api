@@ -4,10 +4,16 @@ import Card from "./Card"
 
 const apiUrl = "http://localhost:3000"
 
+const newPost = {
+  title: '',
+  image:'',
+  content: ''
+}
 
 
 const Main = () =>  {
   const [posts, setPosts] = useState([])
+  const [formData, setFormData] = useState(newPost)
 
  const fetchBlog = () => {
     axios.get(`${apiUrl}/posts`)
@@ -19,10 +25,39 @@ const Main = () =>  {
     fetchBlog()
   }, []);
  
+   /* eliminazione del post */
   const onDelete =(id) => {
-    setPosts((prevPost) => prevPost.filter (post => post.id != id))
+    axios.delete(`${apiUrl}/posts/${id}`)
+    .then(res => {
+      setPosts((prevPost) => prevPost.filter (post => post.id != id))
+    })
+    .catch(error => {
+      console.error("Errore ", error)
+    })}
+  
+
+  /* invio */
+  const handleSumbit = (e) => {
+    e.preventDefault();
+    const newPostSend = { ...formData}
+
+    axios.post(`${apiUrl}/posts`,newPostSend)
+    .then(res => {
+      setPosts(res.data)
+      // resetto il form
+      setFormData(newPost)
+    })
   }
 
+
+/*   const onChange */
+  const handleInput = (e) => {
+    const {name, value} = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }))
+  }
 
   return (
     <main>
@@ -38,49 +73,47 @@ const Main = () =>  {
         </div>{/* row */}
       </div>{/* container */}
 
-     {/*  <div className="container ">
-      <div className="card p-4">
-        <h2 className="mb-3">Lista Posts</h2>
-        {posts.length > 0 ? (
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Immagine</th>
-                <th>Titolo</th>
-                <th>Descrizione</th>
-                <th>Categoria</th>
-                <th>Tags</th>
-                <th>Disponibile</th>
-                <th>Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map(post => (
-                <tr key={post.id}>
-                  <td>
-                    <img src={post.image} alt={post.title} width="100" />
-                  </td>
-                  <td>{post.title}</td>
-                  <td>{post.description}</td>
-                  <td>{post.category}</td>
-                  <td>{post.tag.join(', ')}</td>
-                  <td>{post.published ? 'Sì' : 'No'}</td>
-                  <td>
-                    <button onClick={() => handleRemovePost(post.id)} className="btn btn-danger btn-sm" >
-                      <i className="fa-solid fa-trash-can"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))}
 
-            </tbody>
-          </table>
-        ) : (
-          <h3>Non sono presenti post</h3>
-        )}
 
+      <div className="container">
+        <div className="card p-5 mb-5">
+
+       <form className="form-inline" onSubmit={handleSumbit}>
+         <h4>Inserisci un nuovo post</h4>
+
+       {/* titolo */}
+        <input className="form-control mr-sm-2 mb-3" 
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Titolo" 
+          onChange={handleInput}
+          value={formData.title}
+        />
+
+       {/* immagine */}
+        <input className="form-control mr-sm-2 mb-3" 
+           type="text"
+           id="image"
+           name="image"
+           placeholder="url dell'immagine" 
+           onChange={handleInput}
+           value={formData.image}
+         />
+
+       {/* contenuto */}
+        <textarea className="form-control mr-sm-2 mb-3" 
+          type="text"
+          name="content"
+          placeholder="descrizione dell'elemento"
+          onChange={handleInput}
+          value={formData.content}
+        >
+        </textarea>
+      </form>
+      <button className="btn btn-outline-success my-2 my-sm-0 m-3" type="submit" onClick={handleSumbit}>INVIA</button>
       </div>
-     </div> */}
+     </div> 
     </main>
   )
 }
